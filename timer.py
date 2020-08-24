@@ -11,6 +11,14 @@ def	read_data():
 	return text
 
 def	change_data(text):
+	valid_data(text)
+	text[argv[1] - 1] = argv[2]
+	with open("timedata", 'w') as file:
+		for i in range(7):
+			file.write(text[i])
+			file.write("\n")
+
+def	valid_data(text):
 	try:
 		argv[1] = int(argv[1])
 	except:
@@ -19,11 +27,26 @@ def	change_data(text):
 	if not 0 < argv[1] < 8:
 		print("First argument must be in the range: 1 - 7")
 		exit()
-	text[argv[1] - 1] = argv[2]
-	with open("timedata", 'w') as file:
-		for i in range(7):
-			file.write(text[i])
-			file.write("\n")
+	try:
+		spt = argv[2].index('.')
+	except:
+		print("String format for fill data must be: [hours].[minutes]")
+		exit()
+	if spt != argv[2].rindex('.'):
+		print("String format for fill data must be: [hours].[minutes]")
+		exit()
+	try:
+		hours = int(argv[2][:spt])
+		minutes = int(argv[2][spt + 1:])
+	except:
+		print("Hours must be in the range: 0 - 24\nMinutes must be in the range: 0 - 59")
+		exit()
+	if not -1 < hours < 25 or not -1 < minutes < 60:
+		print("Hours must be in the range: 0 - 24\nMinutes must be in the range: 0 - 59")
+		exit()
+	if hours == 24 and not minutes == 0:
+		print("If hours equally 24, minutes must be equally 0")
+		exit()
 
 def	clear_data():
 	with open("timedata", 'w') as file:
@@ -96,7 +119,7 @@ def	printing(text, day, time_target, time_work, time_remain, overflow):
 def	main():
 	if not 0 < len(argv) < 4:
 		print("Number of arguments must be in the range: 0 - 2")
-		exit
+		exit()
 
 	if len(argv) == 1:
 		text = read_data()
@@ -104,11 +127,24 @@ def	main():
 		printing(text, day, time_target, time_work, time_remain, overflow)
 		exit()
 
-	if len(argv) == 2 and argv[1] == "clear":
-		clear_data()
-		text = read_data()
-		day, time_target, time_work, time_remain, overflow = definding(text)
-		printing(text, day, time_target, time_work, time_remain, overflow)
+	if len(argv) == 2:
+		if (argv[1] == "clear"):
+			clear_data()
+			text = read_data()
+			day, time_target, time_work, time_remain, overflow = definding(text)
+			printing(text, day, time_target, time_work, time_remain, overflow)
+			exit()
+		if (argv[1] == "list"):
+			text = read_data()
+			day, time_target, time_work, time_remain, overflow = definding(text)
+			write_daytime(text, day)
+			exit()
+		if (argv[1] == "stat"):
+			text = read_data()
+			day, time_target, time_work, time_remain, overflow = definding(text)
+			write_stats(time_target, time_work, time_remain, overflow)
+			exit()
+		print("Unknown command")
 		exit()
 
 	if len(argv) == 3:
