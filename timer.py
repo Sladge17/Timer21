@@ -17,7 +17,7 @@ def	change_data(argv, text):
 		print("First argument must be int")
 		exit()
 	if index < 1 or index > 7:
-		print("First argument must be in the range 1 - 7")
+		print("First argument must be in the range: 1 - 7")
 		exit()
 	text[index - 1] = argv[2]
 	with open("timedata", 'w') as file:
@@ -27,7 +27,7 @@ def	change_data(argv, text):
 
 def	clear_data():
 	with open("timedata", 'w') as file:
-		file.write("0.00\n0.00\n0.00\n0.00\n0.00\n0.00\n0.00\n")
+		file.write("0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n")
 
 def	fill_daytime(text):
 	day = [timedelta(hours=0, minutes=0)] * 7
@@ -51,7 +51,7 @@ def	def_timeremain(time_target, time_work):
 		time_remain = -time_remain
 	return (time_remain, overflow)
 
-def	write_daytime(day):
+def	write_daytime(text, day):
 	for i in range(7):
 		spt = int(text[i].find('.'))
 		print("day {}: {} hours {} minutes".format(i + 1, text[i][:spt], text[i][spt + 1:]))
@@ -87,31 +87,39 @@ def	definding(text):
 	time_remain, overflow = def_timeremain(time_target, time_work)
 	return (day, time_target, time_work, time_remain, overflow)
 
-def	printing(day, time_target, time_work, time_remain, overflow):
+def	printing(text, day, time_target, time_work, time_remain, overflow):
 	print
-	write_daytime(day)
+	write_daytime(text, day)
 	print
 	write_stats(time_target, time_work, time_remain, overflow)
 
+def	main():
+	if not 0 < len(argv) < 4:
+		print("Number of arguments must be in the range: 0 - 2")
+		exit
 
-if len(argv) == 1:
-	text = read_data()
-	day, time_target, time_work, time_remain, overflow = definding(text)
-	printing(day, time_target, time_work, time_remain, overflow)
-	exit()
+	if len(argv) == 1:
+		text = read_data()
+		day, time_target, time_work, time_remain, overflow = definding(text)
+		printing(text, day, time_target, time_work, time_remain, overflow)
+		exit()
 
-if len(argv) == 2 and argv[1] == "clear":
-	clear_data()
-	text = read_data()
-	day, time_target, time_work, time_remain, overflow = definding(text)
-	printing(day, time_target, time_work, time_remain, overflow)
-	exit()
+	if len(argv) == 2 and argv[1] == "clear":
+		clear_data()
+		text = read_data()
+		day, time_target, time_work, time_remain, overflow = definding(text)
+		printing(text, day, time_target, time_work, time_remain, overflow)
+		exit()
 
-if len(argv) == 3:
-	text = read_data()
-	change_data(argv, text)
-	day, time_target, time_work, time_remain, overflow = definding(text)
-	printing(day, time_target, time_work, time_remain, overflow)
-	exit()
+	if len(argv) == 3:
+		text = read_data()
+		change_data(argv, text)
+		day, time_target, time_work, time_remain, overflow = definding(text)
+		printing(text, day, time_target, time_work, time_remain, overflow)
+		exit()
 
-print("Something wrong :(")
+	print("Something wrong :(")
+
+
+if __name__ == '__main__':
+	main()
