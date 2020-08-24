@@ -30,10 +30,10 @@ def	valid_data(text):
 	try:
 		spt = argv[2].index('.')
 	except:
-		print("String format for fill data must be: [hours].[minutes]")
+		print("Format for fill working time must be: [hours].[minutes]")
 		exit()
 	if spt != argv[2].rindex('.'):
-		print("String format for fill data must be: [hours].[minutes]")
+		print("Format for fill working time must be: [hours].[minutes]")
 		exit()
 	try:
 		hours = int(argv[2][:spt])
