@@ -10,16 +10,16 @@ def	read_data():
 			text[i] = file.next()[:-1]
 	return text
 
-def	change_data(argv, text):
+def	change_data(text):
 	try:
-		index = int(argv[1])
+		argv[1] = int(argv[1])
 	except:
 		print("First argument must be int")
 		exit()
-	if index < 1 or index > 7:
+	if not 0 < argv[1] < 8:
 		print("First argument must be in the range: 1 - 7")
 		exit()
-	text[index - 1] = argv[2]
+	text[argv[1] - 1] = argv[2]
 	with open("timedata", 'w') as file:
 		for i in range(7):
 			file.write(text[i])
@@ -80,8 +80,8 @@ def	write_stats(time_target, time_work, time_remain, overflow):
 		print("\033[32mOverflow time:	{} hours {} minutes".format(hours, minutes))
 
 def	definding(text):
-	# time_target = int(timedelta(hours=50, minutes=0).total_seconds())
-	time_target = int(timedelta(hours=40, minutes=0).total_seconds())
+	time_target = int(timedelta(hours=50, minutes=0).total_seconds())
+	# time_target = int(timedelta(hours=40, minutes=0).total_seconds())
 	day = fill_daytime(text)
 	time_work = def_timework(day)
 	time_remain, overflow = def_timeremain(time_target, time_work)
@@ -113,7 +113,7 @@ def	main():
 
 	if len(argv) == 3:
 		text = read_data()
-		change_data(argv, text)
+		change_data(text)
 		day, time_target, time_work, time_remain, overflow = definding(text)
 		printing(text, day, time_target, time_work, time_remain, overflow)
 		exit()
