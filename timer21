@@ -1,13 +1,19 @@
 #!/usr/bin/python
 
+from os import system
 from sys import argv
 from datetime import timedelta
 
 def	read_data():
 	text = [""] * 7
-	with open("timedata", 'r') as file:
-		for i in range(7):
-			text[i] = file.next()[:-1]
+	try:
+		file = open("timedata", 'r')
+	except:
+		clear_data()
+		file = open("timedata", 'r')
+	for i in range(7):
+		text[i] = file.next()[:-1]
+	file.close()
 	return text
 
 def	change_data(text):
@@ -143,6 +149,9 @@ def	main():
 			text = read_data()
 			day, time_target, time_work, time_remain, overflow = definding(text)
 			write_stats(time_target, time_work, time_remain, overflow)
+			exit()
+		if (argv[1] == "help"):
+			system('cat readme.md')
 			exit()
 		print("Unknown command")
 		exit()
