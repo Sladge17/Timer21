@@ -151,7 +151,8 @@ def	main():
 			write_stats(time_target, time_work, time_remain, overflow)
 			exit()
 		if (argv[1] == "help"):
-			system('cat readme.md')
+			if system('cat readme2.md 2> /dev/null'):
+				print("Readme file not found. Read instruction on https://github.com/Sladge17/Timer21")
 			exit()
 		print("Unknown command")
 		exit()
