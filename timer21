@@ -16,6 +16,10 @@ def	read_data():
 	file.close()
 	return text
 
+def	clear_data():
+	with open("timedata", 'w') as file:
+		file.write("0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n")
+
 def	change_data(text):
 	valid_data(text)
 	text[argv[1] - 1] = argv[2]
@@ -53,10 +57,6 @@ def	valid_data(text):
 	if hours == 24 and not minutes == 0:
 		print("If hours equally 24, minutes must be equally 0")
 		exit()
-
-def	clear_data():
-	with open("timedata", 'w') as file:
-		file.write("0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n")
 
 def	fill_daytime(text):
 	day = [timedelta(hours=0, minutes=0)] * 7
