@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from os import system
+from os import system, popen
 from sys import argv
 from datetime import timedelta
 
@@ -20,7 +20,39 @@ def	clear_data():
 	with open("timedata", 'w') as file:
 		file.write("0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n0.0\n")
 
-def	change_data(text):
+def	autochange_data(text):
+	day_numb = def_daynumb()
+
+	time_str = def_timestr()
+	text[day_numb] = time_str
+	with open("timedata", 'w') as file:
+		for i in range(7):
+			file.write(text[i])
+			file.write("\n")
+
+def	def_daynumb():
+	day_str = popen("date | awk '{print $1}'").read()[:-1]
+	if day_str == "Sun":
+		return (0)
+	if day_str == "Mon":
+		return (1)
+	if day_str == "Tue":
+		return (2)
+	if day_str == "Wed":
+		return (3)
+	if day_str == "Thu":
+		return (4)
+	if day_str == "Fri":
+		return (5)
+	if day_str == "Sat":
+		return (6)
+
+def	def_timestr():
+	timestr = popen("w -i | grep console | awk '{print $5}'").read()[:-1]
+	timestr = timestr.replace(':', '.')
+	return (timestr)
+
+def	customchange_data(text):
 	valid_data(text)
 	text[argv[1] - 1] = argv[2]
 	with open("timedata", 'w') as file:
@@ -129,6 +161,7 @@ def	main():
 
 	if len(argv) == 1:
 		text = read_data()
+		autochange_data(text)
 		day, time_target, time_work, time_remain, overflow = definding(text)
 		printing(text, day, time_target, time_work, time_remain, overflow)
 		exit()
@@ -142,11 +175,13 @@ def	main():
 			exit()
 		if (argv[1] == "list"):
 			text = read_data()
+			autochange_data(text)
 			day, time_target, time_work, time_remain, overflow = definding(text)
 			write_daytime(text, day)
 			exit()
 		if (argv[1] == "stat"):
 			text = read_data()
+			autochange_data(text)
 			day, time_target, time_work, time_remain, overflow = definding(text)
 			write_stats(time_target, time_work, time_remain, overflow)
 			exit()
@@ -159,7 +194,7 @@ def	main():
 
 	if len(argv) == 3:
 		text = read_data()
-		change_data(text)
+		customchange_data(text)
 		day, time_target, time_work, time_remain, overflow = definding(text)
 		printing(text, day, time_target, time_work, time_remain, overflow)
 		exit()
