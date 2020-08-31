@@ -54,7 +54,10 @@ def	def_timestr():
 
 def	customchange_data(text):
 	valid_data(text)
-	text[argv[1] - 1] = argv[2]
+	if argv[2] == "0":
+		text[argv[1] - 1] = "0.0"
+	else:
+		text[argv[1] - 1] = argv[2]
 	with open("timedata", 'w') as file:
 		for i in range(7):
 			file.write(text[i])
@@ -69,6 +72,8 @@ def	valid_data(text):
 	if not 0 < argv[1] < 8:
 		print("First argument must be in the range: 1 - 7")
 		exit()
+	if argv[2] == "0":
+		return
 	try:
 		spt = argv[2].index('.')
 	except:
