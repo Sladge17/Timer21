@@ -52,10 +52,7 @@ def	def_daynumb():
 
 def	customchange_data(text):
 	valid_data(text)
-	if argv[2] == "0":
-		text[argv[1] - 1] = "0.0"
-	else:
-		text[argv[1] - 1] = argv[2]
+	text[argv[1] - 1] = argv[2]
 	with open("timedata", 'w') as file:
 		for i in range(7):
 			file.write(text[i])
@@ -80,6 +77,8 @@ def	valid_day():
 		return
 
 def	valid_time(arg):
+	if arg == "0":
+		arg = "0.0"
 	try:
 		spt = arg.index('.')
 	except:
@@ -101,6 +100,8 @@ def	valid_time(arg):
 def	fill_daytime(text):
 	day = [timedelta(hours=0, minutes=0)] * 7
 	for i in range(7):
+		if text[i]== "0":
+			text[i] = "0.0"
 		spt = text[i].index('.')
 		day[i] = timedelta(hours=int(text[i][:spt]), minutes=int(text[i][spt + 1:]))
 	return day
@@ -181,7 +182,6 @@ def	main():
 			exit()
 		if (argv[1] == "list"):
 			text = read_data()
-			autochange_data(text)
 			day, time_target, time_work, time_remain, overflow = definding(text)
 			write_daytime(text, day)
 			exit()
