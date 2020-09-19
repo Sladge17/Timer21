@@ -47,7 +47,7 @@ def	def_daynumb():
 		return (5)
 	if day_str == "Sat":
 		return (6)
-	timestr = timestr.replace(':', '.')
+	timestr = day_str.replace(':', '.')
 	return (timestr)
 
 def	customchange_data(text):
